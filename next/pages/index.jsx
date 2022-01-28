@@ -36,6 +36,7 @@ function Home({ galleries }) {
       </Head>
 
       <main>
+        <span>Hello</span>
         <h1>List of Galleries</h1>
         <GenericList loading={false} error={false} items={galleries} component={ListComponent} />
       </main>
