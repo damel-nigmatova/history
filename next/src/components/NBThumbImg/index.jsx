@@ -4,13 +4,21 @@ import styled, { css } from 'styled-components'
 import Img from '../Img'
 
 const Bullet = styled.li`
-  width: 110px;
+  width: 195px;
   height: 110px;
   background-color: #545454;
   padding-bottom: 6px;
   float: left;
   margin: 6px;
 `
+const linkStyle = {
+  float: 'right',
+  color: 'white',
+  textDecoration: 'none',
+  backgroundColor: '#a1b872',
+  padding: '5px',
+  borderRadius: '5px',
+}
 
 const Caption = styled.span`
   font-weight: bold;
@@ -32,12 +40,13 @@ const ImgButton = styled.a`
   `}
 `
 
-function ThumbImg({
+function NBThumbImg({
   onClick,
   caption,
   href,
   src,
   id,
+  ahref,
   viewed: previewed = false,
 }) {
   const [viewed, setViewed] = useState(previewed)
@@ -56,8 +65,9 @@ function ThumbImg({
         <Img src={src} alt="Preview thumbnail (scaled down dimensions)" />
       </ImgButton>
       <Caption>{caption}</Caption>
+      <a href={ahref} style={linkStyle}>Nearby</a>
     </Bullet>
   )
 }
 
-export default ThumbImg
+export default NBThumbImg

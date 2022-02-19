@@ -7,7 +7,7 @@ import { get as getAlbums } from '../../src/lib/albums'
 import { get as getGalleries } from '../../src/lib/galleries'
 
 import SplitViewer from '../../src/components/SplitViewer'
-import ThumbImg from '../../src/components/ThumbImg'
+import NBThumbImg from '../../src/components/NBThumbImg'
 import useSearch from '../../src/hooks/useSearch'
 import useMemory from '../../src/hooks/useMemory'
 
@@ -24,7 +24,9 @@ export async function getStaticProps({ params: { gallery, album } }) {
   const { album: albumDoc } = await getAlbum(gallery, album)
   const preparedItems = albumDoc.items.map((item) => ({
     ...item,
-    corpus: [item.description, item.caption, item.location, item.city, item.search].join(' '),
+    gallery,
+    album,
+    corpus: [item.description, item.caption, item.location, item.city, item.search, item.coordinates.longitude, item.coordinates.latitude].join(' '),
   }))
   return {
     props: { items: preparedItems },
@@ -56,6 +58,8 @@ function AlbumPage({ items = [] }) {
     refImageGallery.current.slideToIndex(index)
   }
 
+  // const pathname = '/demo/sample';
+
   return (
     <div>
       <Head>
@@ -63,16 +67,19 @@ function AlbumPage({ items = [] }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {searchBox}
+
       <SplitViewer setViewed={setViewed} items={filtered} refImageGallery={refImageGallery} />
       {memoryHtml}
+
       <Wrapper>
         {filtered.map((item, index) => (
-          <ThumbImg
+          <NBThumbImg
             onClick={() => selectThumb(index)}
             src={item.thumbPath}
             caption={item.caption}
             key={item.filename}
             id={`select${item.id}`}
+            ahref={`/${item.gallery}/${item.album}/nearby/?longitude=${item.coordinates[0]}&latitude=${item.coordinates[1]}`}
             viewed={(viewedList.includes(index))}
           />
         ))}
